@@ -73,13 +73,7 @@ right:0;
     <main class="h-full flex flex-col">
         <header class="mb-4">
             <h1 class="text-2xl font-bold text-gray-800 text-center">Skyfall Level Generator</h1>
-            <div class="text-center mt-4 space-x-4">
-                <button id="generateBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1 px-6 rounded-lg shadow-md transition-colors">
-                    Generate 2 New Levels
-                </button>
-                <button id="printBtn" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-1 px-6 rounded-lg shadow-md transition-colors">
-                    Print Levels
-                </button>
+            <div class="text-center mt-4 space-x-2"><button id="generateBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-colors"> Generate 2 Levels </button><button id="printBtn" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-colors"> Print Levels </button>
             </div>
         </header>
           <div class="flex-1 gap-4 overflow-auto">
@@ -97,7 +91,7 @@ right:0;
         let gridData2 = [];
         
         // Initialize grid
-        function initializeGrid(totalRows = 22) {
+        function initializeGrid(totalRows = 20) {
             const gridData = [];
             for (let row = 1; row <= totalRows; row++) {
                 // Add blank column (column 0)
@@ -218,24 +212,14 @@ right:0;
                 [{ row: 0, col: 0 }, { row: 0, col: 1 }, { row: 1, col: 1 }, { row: 1, col: 2 }], // Z horizontal
                 [{ row: 0, col: 1 }, { row: 1, col: 0 }, { row: 1, col: 1 }, { row: 2, col: 0 }]  // Z vertical
             ],
-            // Triomino shapes (3 pieces each)
-            I3: [
-                [{ row: 0, col: 0 }, { row: 0, col: 1 }, { row: 0, col: 2 }], // Horizontal line
-                [{ row: 0, col: 0 }, { row: 1, col: 0 }, { row: 2, col: 0 }]  // Vertical line
-            ],
-            V3: [
-                [{ row: 0, col: 0 }, { row: 1, col: 0 }, { row: 1, col: 1 }], // L-shape (corner)
-                [{ row: 0, col: 0 }, { row: 0, col: 1 }, { row: 1, col: 1 }], // Rotated 90°
-                [{ row: 0, col: 1 }, { row: 1, col: 0 }, { row: 1, col: 1 }], // Rotated 180°
-                [{ row: 0, col: 0 }, { row: 1, col: 0 }, { row: 0, col: 1 }]  // Rotated 270°
-            ]
+           
         };
 
         // Place a random tetromino shape in the grid
         function placeTetrominoShape(gridData, usedImages = new Set()) {
             // Define middle area (rows 8-15, columns 2-5 to ensure shapes fit)
             const minRow = 6;
-            const maxRow = 15;
+            const maxRow = 16;
             const minCol = 1;
             const maxCol = 6;
             
@@ -247,7 +231,7 @@ right:0;
             
  // Choose a unique image for this shape (not used by other polyominoes in this grid)
             const availableImages = [];
-            for (let i = 1; i <= 7; i++) {
+            for (let i = 1; i <= 5; i++) {
                 if (!usedImages.has(i)) {
                     availableImages.push(i);
                 }
@@ -255,7 +239,7 @@ right:0;
             
             // If no unique images available, fall back to any image
             if (availableImages.length === 0) {
-                availableImages.push(...[1, 2, 3, 4, 5, 6, 7]);
+                availableImages.push(...[1, 2, 3, 4, 5]);
             }
             
             const randomImage = availableImages[Math.floor(Math.random() * availableImages.length)];
@@ -312,23 +296,24 @@ right:0;
                 const result = placeTetrominoShape(gridData, usedPolyominoImages);
                 // usedPolyominoImages is automatically updated by the function
             }
-const maxContentRow = 17+numShapes;
+const maxContentRow = 17+numShapes-2;
             // Step 1: Place Image 1
             // 1 in row 1
            let cell = getRandomCellFromRows(gridData, 1, 1);
             if (cell) cell.image = 1;
             
-            // 2 more in rows 2-5
-	let randomPlatformPowerup = Math.floor(Math.random() * 6)+12;
+           
+	let randomPlatformPowerup = Math.floor(Math.random() * 11)+11;
 	
-	let randomPlatformPowerup2 = Math.floor(Math.random() * 6)+12;
+	let randomPlatformPowerup2 = Math.floor(Math.random() * 11)+11;
 if (randomPlatformPowerup2 === randomPlatformPowerup){
 randomPlatformPowerup2 = randomPlatformPowerup2 + 1;
 }
-if (randomPlatformPowerup2 === 18){
-randomPlatformPowerup2 = 12;
+if (randomPlatformPowerup2 === 22){
+randomPlatformPowerup2 = 11;
 }
-            let cells = getRandomCellsFromRows(gridData, 2, 5, 2);
+ // 2 more in rows 2-5
+            let cells = getRandomCellsFromRows(gridData, 2, 5, 3);
             cells.forEach(cell => cell.image = 1);
             
             // 2 more in rows 6-10
@@ -364,15 +349,15 @@ randomPlatformPowerup2 = 12;
                 
                 // Determine target Image 2 count based on row
                 let targetImage2Count;
-                if (row === 1) {
+                if (row == 1) {
                     targetImage2Count = 1;
-                } else if (row >= 2 && row <= 5) {
+                } else if (row >= 2 && row <= 4) {
                     targetImage2Count = 2;
-                } else if (row >= 6 && row <= 10) {
+                } else if (row >= 5 && row <= 9) {
                     targetImage2Count = 3;
-                } else if (row >= 11 && row <= 15) {
+                } else if (row >= 10 && row <= 14) {
                     targetImage2Count = 4;
-                } else if (row >= 16 && row <= maxContentRow) {
+                } else if (row >= 15 && row <= maxContentRow) {
                     targetImage2Count = 5;
                 }
                 
@@ -392,111 +377,105 @@ randomPlatformPowerup2 = 12;
                 }
             }
 
-       
-
- 	// Step 4: Replace Image 2 with Image 4
-            // 1 random from rows 1-5
-            let availableCells = getCellsWithImageFromRows(gridData, 2, 1, 5);
+       // Step 4: Replace Image 2 with Image 5
+            // 2 random from rows 1-5
+            availableCells = getCellsWithImageFromRows(gridData, 2, 1, 5);
             for (let i = availableCells.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [availableCells[i], availableCells[j]] = [availableCells[j], availableCells[i]];
             }
-            cells = availableCells.slice(0, 1);
-            cells.forEach(cell => cell.image = 4);
+            cells = availableCells.slice(0, 2);
+            cells.forEach(cell => cell.image = 5);
             
-            // 1 random from rows 6-10
+            // 2 random from rows 6-10
             availableCells = getCellsWithImageFromRows(gridData, 2, 6, 10);
             for (let i = availableCells.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [availableCells[i], availableCells[j]] = [availableCells[j], availableCells[i]];
             }
-            cells = availableCells.slice(0, 1);
-            cells.forEach(cell => cell.image = 4);
+            cells = availableCells.slice(0, 2);
+            cells.forEach(cell => cell.image = 5);
             
-            // 1 random from rows 11-15
+            // 2 random from rows 11-15
             availableCells = getCellsWithImageFromRows(gridData, 2, 11, 15);
             for (let i = availableCells.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [availableCells[i], availableCells[j]] = [availableCells[j], availableCells[i]];
             }
-            cells = availableCells.slice(0, 1);
-            cells.forEach(cell => cell.image = 4);
+            cells = availableCells.slice(0, 2);
+            cells.forEach(cell => cell.image = 5);
             
-            // 1 random from rows 16-18
-            availableCells = getCellsWithImageFromRows(gridData, 2, 16, 18);
+         
+// Step 4: Replace Image 2 with Image 6
+            // 2 random from rows 1-5
+            availableCells = getCellsWithImageFromRows(gridData, 2, 1, 5);
             for (let i = availableCells.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [availableCells[i], availableCells[j]] = [availableCells[j], availableCells[i]];
             }
-            cells = availableCells.slice(0, 1);
-            cells.forEach(cell => cell.image = 4);
-
-            // Step 5: Place Image 5 (one per every 5 rows from 1-15)
-            for (let startRow = 1; startRow <= 16; startRow += 5) {
-                const endRow = Math.min(startRow + 4, 15);
-                cell = getRandomCellFromRows(gridData, startRow, endRow);
-                if (cell) cell.image = 5;
+            cells = availableCells.slice(0, 2);
+            cells.forEach(cell => cell.image = 6);
+            
+            // 3 random from rows 6-11
+            availableCells = getCellsWithImageFromRows(gridData, 2, 6, 11);
+            for (let i = availableCells.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [availableCells[i], availableCells[j]] = [availableCells[j], availableCells[i]];
             }
-
-            // Step 6: Place Image 6 (one per every 3 rows from 2-16)
-            for (let startRow = 2; startRow <= 15; startRow += 3) {
-                const endRow = Math.min(startRow + 2, 16);
-                cell = getRandomCellFromRows(gridData, startRow, endRow);
-                if (cell) cell.image = 6;
+            cells = availableCells.slice(0, 3);
+            cells.forEach(cell => cell.image = 6);
+            
+            // 2 random from rows 12-16
+            availableCells = getCellsWithImageFromRows(gridData, 2, 11, 16);
+            for (let i = availableCells.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [availableCells[i], availableCells[j]] = [availableCells[j], availableCells[i]];
             }
+            cells = availableCells.slice(0, 2);
+            cells.forEach(cell => cell.image = 6);
+        
+            // Step 6: Place Image 7 (one per every 7 rows from 2-16)
+       //     for (let startRow = 2; startRow <= 15; startRow += 7) {
+       //         const endRow = Math.min(startRow + 6, 16);
+       //         cell = getRandomCellFromRows(gridData, startRow, endRow);
+       //         if (cell) cell.image = 7;
+       //     }
 
-            // Step 7: Place Image 7 (one per every 4 rows from 2-16)
-            for (let startRow = 2; startRow <= 16; startRow += 4) {
-                const endRow = Math.min(startRow + 3, 16);
-                cell = getRandomCellFromRows(gridData, startRow, endRow);
-                if (cell) cell.image = 7;
-            }
-
-            // Step 8: Place Images 8, 9, 10 (2 copies each in rows 5-15)
-            [8, 9].forEach(imageNum => {
-                cells = getRandomCellsFromRows(gridData, 5, 15, 2);
+           
+            // Step 7: Place Images 7, 8, 9 (2 copies each in rows 4-15)
+            [7, 8, 9].forEach(imageNum => {
+                cells = getRandomCellsFromRows(gridData, 4, 15, 2);
                 cells.forEach(cell => cell.image = imageNum);
             });
 
-            // Step 9: Place Image 11 (one per every 6 rows from 4-16)
+            // Step 9: Place Image 10 (one per every 6 rows from 4-16)
             for (let startRow = 4; startRow <= 15; startRow += 6) {
                 const endRow = Math.min(startRow + 5, 16);
                 cell = getRandomCellFromRows(gridData, startRow, endRow);
-                if (cell) cell.image = 11;
+                if (cell) cell.image = 10;
             }
 
-            // Step 10: Place Images 12, 13, 14 in blank column (even rows 8-18)
-            const evenRows = [];
-            for (let row = 8; row <= 18; row += 2) {
-                evenRows.push(row);
+             // STEP 8: Add images to blank column
+            const evenRows = [8, 10, 12, 14, 16, 18];
+            
+            // Get blank cells in even rows (8-18)
+            const evenBlankCells = gridData.filter(cell => 
+                cell.isBlankColumn && 
+                evenRows.includes(cell.row)
+            );
+            
+            // Place exactly 2 of Image 12 in even rows
+            for (let i = 0; i < 2 && evenBlankCells.length > 0; i++) {
+                const randomIndex = Math.floor(Math.random() * evenBlankCells.length);
+                const selectedCell = evenBlankCells.splice(randomIndex, 1)[0];
+                selectedCell.image = 12;
             }
             
-           // Distribute images 12, 13, 14 ensuring at least 2 of each but max 3 of each
-            const imageTypes = [12, 13, 14];
-            const imageAssignments = [];
-            const imageCounts = { 12: 0, 13: 0, 14: 0 };
-            
-            // First, assign 2 of each image type (minimum requirement)
-            imageTypes.forEach(imageType => {
-                imageAssignments.push(imageType, imageType);
-                imageCounts[imageType] = 2;
+            // Fill remaining even row blank cells randomly with Images 13-20
+            evenBlankCells.forEach(cell => {
+                cell.image = Math.floor(Math.random() * 10) + 13; // Random image from 13-22
             });
             
-           
-            
-            // Shuffle the assignments
-            for (let i = imageAssignments.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [imageAssignments[i], imageAssignments[j]] = [imageAssignments[j], imageAssignments[i]];
-            }
-            
-            // Assign to blank column cells
-            evenRows.forEach((row, index) => {
-                const blankCell = gridData.find(cell => cell.row === row && cell.col === 0);
-                if (blankCell && index < imageAssignments.length) {
-                    blankCell.image = imageAssignments[index];
-                }
-            });
         }
 
         // Render the grid
@@ -504,7 +483,7 @@ randomPlatformPowerup2 = 12;
             const gridElement = document.getElementById(gridElementId);
             gridElement.innerHTML = '';
  // Update grid template rows dynamically
-            gridElement.style.gridTemplateRows = `repeat(${22}, 1fr)`;
+            gridElement.style.gridTemplateRows = `repeat(${20}, 1fr)`;
 
             // Sort grid data by row in descending order (22 to 1), then by column
             const sortedGridData = [...gridData].sort((a, b) => {
@@ -518,8 +497,8 @@ randomPlatformPowerup2 = 12;
                 const cellDiv = document.createElement('div');
                 
                 // Handle header rows (last 2 rows) as special sections
-                const headerStartRow = 22 - headerRows; // Last 2 rows become headers
-                if (cellData.row >= headerStartRow && cellData.row <= 22) {
+                const headerStartRow = 20 - headerRows; // Last 2 rows become headers
+                if (cellData.row >= headerStartRow && cellData.row <= 20) {
                     if (cellData.col === 0) {
                         // Create spanning header for this row
                         cellDiv.className = 'bg-gray-200 border-2 border-gray-400 rounded-lg grid-cell flex items-center justify-center text-sm font-bold text-gray-700';
@@ -528,8 +507,8 @@ randomPlatformPowerup2 = 12;
 		
 
                         const rowTexts = {
-			[23-headerRows]: 'Zap! The city is destroyed, you lose!',
-                            [22-headerRows]: 'Omega Laser Firing in 3...2...1...'
+			[21-headerRows]: 'Zap! The city is destroyed, you lose!',
+                            [20-headerRows]: 'Omega Laser Firing in 3...2...1...'
                         };
                         cellDiv.textContent = rowTexts[cellData.row];
                         gridElement.appendChild(cellDiv);
@@ -544,9 +523,17 @@ randomPlatformPowerup2 = 12;
                     
                     if (cellData.image) {
                         const imageUrls = {
-                            12: 'loseheart.png',
+                            12: 'advance.png',
                             13: 'losedice.png',
-                            14: 'advance.png'
+                            14: 'loseheart.png',
+			    15: 'losejump.png',
+                            16: 'loseweapon.png',
+                            17: 'losecollect.png',
+			    18: 'mustkill2.png',
+                            19: 'mustkill3.png',
+                            20: 'setallto1.png',
+			    21: 'mustjump.png',
+                            22: 'rerolljumpdice.png',
                         };
                         
                         const img = document.createElement('img');
@@ -573,12 +560,10 @@ randomPlatformPowerup2 = 12;
                          // Add the image
                             const imageUrls = {
                              	 1: 'redship.png',
-                       		 2: 'blueship.png',
-                       		 3: 'orangeship.png',
-                       		 4: 'greyship.png',
-                       		 5: 'cyanship.png',
-                       		 6: 'purpleship.png',
-                      		 7: 'yellowship.png',
+                       		 2: 'orangeship.png',
+                       		 3: 'cyanship.png',
+                       		 4: 'purpleship.png',
+                      		 5: 'yellowship.png',
                             };
                             
                             const img = document.createElement('img');
@@ -597,19 +582,23 @@ randomPlatformPowerup2 = 12;
                         2: 'alien.png',
                         3: 'alienred.png',
                         4: 'alienshield.png',
-                        5: 'shield.png',
-                        6: 'katana.png',
-                        7: 'gun.png',
-                        8: 'reroll.png',
-                        9: 'plusminus.png',
-                        10: 'mastery.png',
-                        11: 'bomb.png',
-                        12: 'platformboots.png',
-                        13: 'platformgun.png',
-                        14: 'platformshot.png',
-                        15: 'platformbomb.png',
-                        16: 'platformblade.png',
-                        17: 'platformtele.png'
+                        5: 'aliengun.png',
+                        6: 'alienblade.png',
+                        7: 'reroll.png',
+                        8: 'plusminus.png',
+			9: 'red.png',
+                        10: 'bomb.png',
+                        11: 'platformboots.png',
+                        12: 'platformgun.png',
+                        13: 'platformshot.png',
+                        14: 'platformboots2.png',
+                        15: 'platformblade.png',
+                        16: 'platformtele.png',
+                        17: 'platformtime.png',
+                        18: 'platformflame.png',
+                        19: 'platformbomb.png',
+                        20: 'platformboots3.png',
+                        21: 'platformsteel.png'
                     };
                             
                             const img = document.createElement('img');
@@ -631,39 +620,42 @@ randomPlatformPowerup2 = 12;
         }
 
         // Initialize and render first layout
-        	const numShapes1 = Math.floor(Math.random() * 3) + 1; // 1-3 shapes
-                const numShapes2 = Math.floor(Math.random() * 3) + 1; // 1-3 shapes
+                const numShapes1 = 3; 
+                const numShapes2 = 3;
                 
                 // Calculate total rows based on number of shapes
                 const headerRows1 = 4-numShapes1
                 const headerRows2 = 4-numShapes2
                 
                 // Reinitialize grids with new row counts
-                gridData1 = initializeGrid(22);
-                gridData2 = initializeGrid(22);
+                gridData1 = initializeGrid(20);
+                gridData2 = initializeGrid(20);
                 generateLayout(gridData1, numShapes1);
                 generateLayout(gridData2, numShapes2);
                 renderGrid(gridData1, 'grid1', headerRows1);
                 renderGrid(gridData2, 'grid2', headerRows2);
 
+
         // Add event listener to generate button
           document.getElementById('generateBtn').addEventListener('click', function() {
                 // Generate new random number of shapes for each grid
-                const numShapes1 = Math.floor(Math.random() * 3) + 1; // 1-3 shapes
-                const numShapes2 = Math.floor(Math.random() * 3) + 1; // 1-3 shapes
+                const numShapes1 = 3; 
+                const numShapes2 = 3;
                 
                 // Calculate total rows based on number of shapes
                 const headerRows1 = 4-numShapes1
                 const headerRows2 = 4-numShapes2
                 
                 // Reinitialize grids with new row counts
-                gridData1 = initializeGrid(22);
-                gridData2 = initializeGrid(22);
+                gridData1 = initializeGrid(20);
+                gridData2 = initializeGrid(20);
                 generateLayout(gridData1, numShapes1);
                 generateLayout(gridData2, numShapes2);
                 renderGrid(gridData1, 'grid1', headerRows1);
                 renderGrid(gridData2, 'grid2', headerRows2);
- });
+
+ });  
+
         // Add event listener to print button
         document.getElementById('printBtn').addEventListener('click', function() {
             window.print();
