@@ -333,14 +333,14 @@ randomPlatformPowerup2 = 11;
             cells.forEach(cell => cell.image = 1);
          
             // 2 more in rows 16-18
-            cells = getRandomCellsFromRows(gridData, 16, maxContentRow, 2);
+            cells = getRandomCellsFromRows(gridData, 16, 17, 2);
              cells.forEach(cell => cell.image = 1);
 
-			cells = getRandomCellsFromRows(gridData, maxContentRow, maxContentRow, 7);
+			cells = getRandomCellsFromRows(gridData, 18, 18, 7);
              cells.forEach(cell => cell.image = 1);
             
             // STEP 3: Place Image 2 with specific counts per row range (counting polyomino shapes)
-            for (let row = 1; row <= maxContentRow-1; row++) {
+            for (let row = 1; row <= 17; row++) {
                 // Count existing polyomino shapes in this row (they count as Image 2)
                 const existingPolyominoCount = gridData.filter(cell => 
                     cell.row === row && 
@@ -359,7 +359,7 @@ randomPlatformPowerup2 = 11;
                     targetImage2Count = 3;
                 } else if (row >= 10 && row <= 14) {
                     targetImage2Count = 4;
-                } else if (row >= 15 && row <= maxContentRow-1) {
+                } else if (row >= 15 && row <= 17) {
                     targetImage2Count = 5;
                 }
                 
@@ -665,5 +665,6 @@ randomPlatformPowerup2 = 11;
     </script>
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99533e1ae1e6d96e',t:'MTc2MTU3OTEwOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
 
 
