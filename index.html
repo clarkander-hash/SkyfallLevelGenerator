@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>7x22 Grid with Images</title>
+    <title>Skyfall Level Generator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -296,7 +296,7 @@ right:0;
                 const result = placeTetrominoShape(gridData, usedPolyominoImages);
                 // usedPolyominoImages is automatically updated by the function
             }
-const maxContentRow = 17+numShapes-2;
+const maxContentRow = 17+numShapes-1;
             // Step 1: Place Image 1
             // 1 in row 1
            let cell = getRandomCellFromRows(gridData, 1, 1);
@@ -333,12 +333,14 @@ randomPlatformPowerup2 = 11;
             cells.forEach(cell => cell.image = 1);
          
             // 2 more in rows 16-18
-            cells = getRandomCellsFromRows(gridData, 16, maxContentRow, 2);
+            cells = getRandomCellsFromRows(gridData, 16, 18, 2);
              cells.forEach(cell => cell.image = 1);
 
+			cells = getRandomCellsFromRows(gridData, 19, 19, 7);
+             cells.forEach(cell => cell.image = 1);
             
             // STEP 3: Place Image 2 with specific counts per row range (counting polyomino shapes)
-            for (let row = 1; row <= maxContentRow; row++) {
+            for (let row = 1; row <= 18; row++) {
                 // Count existing polyomino shapes in this row (they count as Image 2)
                 const existingPolyominoCount = gridData.filter(cell => 
                     cell.row === row && 
@@ -357,7 +359,7 @@ randomPlatformPowerup2 = 11;
                     targetImage2Count = 3;
                 } else if (row >= 10 && row <= 14) {
                     targetImage2Count = 4;
-                } else if (row >= 15 && row <= maxContentRow) {
+                } else if (row >= 15 && row <= 18) {
                     targetImage2Count = 5;
                 }
                 
@@ -497,7 +499,7 @@ randomPlatformPowerup2 = 11;
                 const cellDiv = document.createElement('div');
                 
                 // Handle header rows (last 2 rows) as special sections
-                const headerStartRow = 20 - headerRows; // Last 2 rows become headers
+                const headerStartRow = 21 - headerRows; // Last 2 rows become headers
                 if (cellData.row >= headerStartRow && cellData.row <= 20) {
                     if (cellData.col === 0) {
                         // Create spanning header for this row
@@ -508,7 +510,7 @@ randomPlatformPowerup2 = 11;
 
                         const rowTexts = {
 			[21-headerRows]: 'Zap! The city is destroyed, you lose!',
-                            [20-headerRows]: 'Omega Laser Firing in 3...2...1...'
+                        
                         };
                         cellDiv.textContent = rowTexts[cellData.row];
                         gridElement.appendChild(cellDiv);
@@ -534,6 +536,7 @@ randomPlatformPowerup2 = 11;
                             20: 'setallto1.png',
 			    21: 'mustjump.png',
                             22: 'rerolljumpdice.png',
+23: 'omega.png',
                         };
                         
                         const img = document.createElement('img');
@@ -663,3 +666,9 @@ randomPlatformPowerup2 = 11;
     </script>
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99533e1ae1e6d96e',t:'MTc2MTU3OTEwOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
+
+
+
+
+
