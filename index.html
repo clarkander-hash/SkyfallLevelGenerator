@@ -38,7 +38,7 @@ width: 100%;
                 margin: 0 !important;
                 page-break-inside: avoid;
 position: absolute;
-bottom:2.2in;
+bottom:0.7 in;
 left:0;
             }
 #grid2 { 
@@ -48,7 +48,7 @@ left:0;
                 margin: 0 !important;
                 page-break-inside: avoid;
 position: absolute;
-bottom:2.2in;
+bottom:0.7 in;
 right:0;
 }
             
@@ -459,7 +459,7 @@ randomPlatformPowerup2 = 11;
 
              // STEP 8: Add images to blank column
             const evenRows = [8, 10, 12, 14, 16, 18];
-            
+
             // Get blank cells in even rows (8-18)
             const evenBlankCells = gridData.filter(cell => 
                 cell.isBlankColumn && 
@@ -471,11 +471,29 @@ randomPlatformPowerup2 = 11;
                 const randomIndex = Math.floor(Math.random() * evenBlankCells.length);
                 const selectedCell = evenBlankCells.splice(randomIndex, 1)[0];
                 selectedCell.image = 12;
-            }
-            
+		}
+	            
             // Fill remaining even row blank cells randomly with Images 13-20
             evenBlankCells.forEach(cell => {
                 cell.image = Math.floor(Math.random() * 10) + 13; // Random image from 13-22
+            });
+
+const image12Cells = gridData.filter(cell => 
+                evenRows.includes(cell.row) && 
+                cell.isBlankColumn && 
+                cell.image === 12
+            );
+ image12Cells.forEach(cell12 => {
+                // Find the cell in the odd row just below (row - 1)
+                const belowRow = cell12.row - 1;
+                const cellBelow = gridData.find(cell => 
+                    cell.row === belowRow && 
+                    cell.isBlankColumn
+                );
+                
+                if (cellBelow) {
+                    cellBelow.image = 24;
+                }
             });
             
         }
@@ -536,7 +554,8 @@ randomPlatformPowerup2 = 11;
                             20: 'setallto1.png',
 			    21: 'mustjump.png',
                             22: 'rerolljumpdice.png',
-23: 'omega.png',
+			23: 'omega.png',
+			24: 'image125.png'
                         };
                         
                         const img = document.createElement('img');
